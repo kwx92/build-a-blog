@@ -3,11 +3,29 @@
     <head>
         <style>
             .error { color: red;}
+            *{
+                text-align: center;
+                font-family: monospace;
+            }
+            p ul{
+                display: inline-block;
+            }
+            input{
+                width: 250px;
+                height: 25px;
+            }
+            textarea{
+                margin: 10px 0;
+                width: 600px;
+                height: 300px;
+            }
         </style>
     </head>
 <body>
+    <a href = "/">Main Page Blog</a>
+    <a href = "/add-entry">Add a Blog Entry</a>
     {% block content %}
-    {% endblock %}
 
+    {% endblock %}
 </body>
 </html>

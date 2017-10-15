@@ -21,21 +21,23 @@ class Blog(db.Model):
 form = """ 
 
 """
+blogs = []
 
 @app.route("/")
 def index():
-    return render_template('homepage.html')
+    return render_template('homepage.html', blogs=blogs)
 
 @app.route("/add-entry", methods=['GET','POST'])
 def add_entry():
     if request.method=='GET':
         return render_template('addentry.html')
     else:
-        return render_template('entry.html')
+        title=request.form['title']
+        blog_entry=request.form['blog_entry']
+        entry = request.form['title']
+        blogs.append(entry)
+        return render_template('entry.html', title=title, blog_entry=blog_entry)
 
-@app.route("/entry", methods=['GET'])
-def entry():
-    return render_template('entry.html')
 
 if __name__=='__main__':
     app.run()

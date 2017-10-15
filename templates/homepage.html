@@ -2,6 +2,10 @@
 
 {% block content %}
 <form action='/' method='get'>
-<h1>Build a Blog</h1>
+<h1>Blog Entries:</h1>
+    {% for entry in blogs %}
+    <h2>{{entry}}</h2>
+    <br>
+    {% endfor %}
 </form>
 {% endblock %}

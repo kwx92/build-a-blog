@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app=Flask(__name__)
@@ -14,9 +14,8 @@ class Blog(db.Model):
     post_body=db.Column(db.String(1000))
 
     def __init__(self, title, post_body):
-        self.name=name
-        self.title=title
-        self.post_body=post_body
+        self.title = title
+        self.post_body = post_body
 
 form = """ 
 
@@ -25,19 +24,32 @@ blogs = []
 
 @app.route("/")
 def index():
+    blogs = Blog.query.all()
     return render_template('homepage.html', blogs=blogs)
 
-@app.route("/add-entry", methods=['GET','POST'])
+@app.route("/addentry", methods=['POST','GET'])
 def add_entry():
     if request.method=='GET':
         return render_template('addentry.html')
     else:
-        title=request.form['title']
-        blog_entry=request.form['blog_entry']
-        entry = request.form['title']
-        blogs.append(entry)
-        return render_template('entry.html', title=title, blog_entry=blog_entry)
+        title = request.form['title']
+        post_body = request.form['post_body']
+        new_entry = Blog(title, post_body)
+        db.session.add(new_entry)
+        db.session.commit()
+        blog_id = request.args.get('id')
+        blog=db.session.query(Blog).filter(Blog.id==blog_id).first()
+        return render_template('entry.html', blog=blog)
 
-
+@app.route("/entry", methods=['GET'])
+def view_entry():
+    blog_id = request.args.get('id')
+    blog=db.session.query(Blog).filter(Blog.id == blog_id).first()
+    #title=request.form['title']
+    if blog_id:
+        return render_template('entry.html', blog=blog)
+    else:
+        return redirect('/')
+    
 if __name__=='__main__':
     app.run()

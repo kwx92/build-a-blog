@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action='/' method='get'>
 <h1>Blog Entries:</h1>
-    {% for entry in blogs %}
-    <h2>{{entry}}</h2>
+    {% for blog in blogs %}
+    <a href='/entry?id={{blog.id}}'/><h2>{{blog.title}}</h2></a>
+    <p>{{blog.post_body}}</p>
     <br>
     {% endfor %}
-</form>
 {% endblock %}
